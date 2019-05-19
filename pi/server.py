@@ -17,6 +17,8 @@ led0_state = False
 led1_state = False
 led2_state = False
 
+pi_delay_us = -1
+
 @app.route("/")
 def hello():
     return render_template("index.html")
@@ -27,6 +29,18 @@ def status():
     analog = a_star.read_analog()
     battery_millivolts = a_star.read_battery_millivolts()
     encoders = a_star.read_encoders()
+
+    delay = a_star.read_pi_delay_us()
+    global pi_delay_us
+    if delay != pi_delay_us:
+        pi_delay_us = delay
+        # The delay should only be 0 if you're not using a Raspberry Pi or if I2C is running at 400kHz.
+        # See https://github.com/pololu/pololu-rpi-slave-arduino-library/blob/master/src/PololuRPiSlave.h
+        if delay == 0:
+            print("Raspberry Pi I2C workaround is disabled")
+        else:
+            print("Raspberry Pi I2C workaround delay is " + str(delay))
+
     data = {
         "buttons": buttons,
         "battery_millivolts": battery_millivolts,

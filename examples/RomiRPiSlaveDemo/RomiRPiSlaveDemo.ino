@@ -24,6 +24,8 @@
 // data format, make sure to update the corresponding code in
 // a_star.py on the Raspberry Pi.
 
+const unsigned int PI_DELAY_US = 0;
+
 struct Data
 {
   bool yellow, green, red;
@@ -37,9 +39,11 @@ struct Data
   char notes[14];
 
   int16_t leftEncoder, rightEncoder;
+
+  uint16_t pi_delay_us;
 };
 
-PololuRPiSlave<struct Data,5> slave;
+PololuRPiSlave<struct Data,PI_DELAY_US> slave;
 PololuBuzzer buzzer;
 Romi32U4Motors motors;
 Romi32U4ButtonA buttonA;
@@ -51,6 +55,9 @@ void setup()
 {
   // Set up the slave at I2C address 20.
   slave.init(20);
+
+  // Really we should retrieve the delay value from slave but it's not available.
+  slave.buffer.pi_delay_us = PI_DELAY_US;
 
   // Play startup sound.
   buzzer.play("v10>>g16>>>c16");
