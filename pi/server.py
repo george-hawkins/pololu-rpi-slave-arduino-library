@@ -30,16 +30,16 @@ def status():
     battery_millivolts = a_star.read_battery_millivolts()
     encoders = a_star.read_encoders()
 
-    delay = a_star.read_pi_delay_us()
+    delay = a_star.read_pi_delay_us()[0]
     global pi_delay_us
     if delay != pi_delay_us:
         pi_delay_us = delay
         # The delay should only be 0 if you're not using a Raspberry Pi or if I2C is running at 400kHz.
         # See https://github.com/pololu/pololu-rpi-slave-arduino-library/blob/master/src/PololuRPiSlave.h
         if delay == 0:
-            print("Raspberry Pi I2C workaround is disabled")
+            print(" * Raspberry Pi I2C workaround is disabled")
         else:
-            print("Raspberry Pi I2C workaround delay is " + str(delay))
+            print(" * Raspberry Pi I2C workaround delay is " + str(delay))
 
     data = {
         "buttons": buttons,

@@ -50,7 +50,7 @@ class AStar:
     return self.read_unpack(39, 4, 'hh')
 
   def read_pi_delay_us(self):
-    return self.read_unpack(43, 2, 'h')
+    return self.read_unpack(43, 2, 'H')
 
   def test_read8(self):
     self.read_unpack(0, 8, 'cccccccc')
